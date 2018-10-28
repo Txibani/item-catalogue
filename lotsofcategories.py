@@ -2,9 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # from database_setup import Category, Base, CategoryItem
-from database_setup import Base, Category, CategoryItem
+from database_setup import Base, Category, CategoryItem, User
 
-engine = create_engine('sqlite:///itemcatalogue.db')
+engine = create_engine('sqlite:///itemcataloguewithusers.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -18,6 +18,13 @@ DBSession = sessionmaker(bind=engine)
 # revert all of them back to the last commit by calling
 # session.rollback()
 session = DBSession()
+
+
+# Create dummy user
+User1 = User(name="Robo Barista", email="tinnyTim@udacity.com",
+             picture='https://pbs.twimg.com/profile_images/2671170543/18debd694829ed78203a5a36dd364160_400x400.png')
+session.add(User1)
+session.commit()
 
 
 # Items for Soccer
