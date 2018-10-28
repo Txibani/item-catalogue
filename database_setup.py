@@ -28,7 +28,7 @@ class CategoryItem(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
-    category_name = Column(String(80), ForeignKey('category.id'))
+    category_name = Column(String(80), ForeignKey('category.name'))
     category = relationship(Category)
 
     @property
