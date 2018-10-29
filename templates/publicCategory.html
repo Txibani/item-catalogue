@@ -11,16 +11,6 @@
 
 		</div>
     </div>
-    
-    <div class="row padding-top padding-bottom">
-        <div class="col-md-1"></div>
-        <div class="col-md-10 padding-none">
-                <a href = "{{url_for('addItem', category_name = category.name)}}">
-                Add Category
-            </a>
-        </div>
-        <div class="col-md-1"></div>
-    </div>
     <div>
         {% for item in items %}
         <a href = "{{url_for('showItem', category_name = category.name, item_name = item.name)}}">

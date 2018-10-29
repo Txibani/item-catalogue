@@ -120,8 +120,6 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['email'])
-    print "done!"
     return output
 
 
@@ -133,14 +131,11 @@ def gdisconnect():
         response = make_response(json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    print 'In gdisconnect access token is %s', access_token
-    print 'User name is: '
-    print login_session['email']
+
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
-    print 'result is '
-    print result
+
     if result['status'] == '200':
         del login_session['access_token']
         del login_session['gplus_id']
@@ -192,7 +187,10 @@ def showCategory(category_name):
     category = session.query(Category).filter_by(name = category_name).one()
     items = session.query(CategoryItem).filter_by(category_name = category_name).all()
 
-    return render_template('category.html', items = items, category = category)
+    if 'email' not in login_session:
+        return render_template('publicCategory.html', items = items, category = category)
+    else:
+        return render_template('category.html', items = items, category = category)
 
 
 # Show item description
@@ -204,7 +202,12 @@ def showItem(category_name, item_name):
         if item.category_name == category.name:
             item_show = item
 
-    return render_template('item.html', item = item_show, category = category)   
+    if 'email' not in login_session:
+        return render_template('publicItem.html', item = item_show, category = category) 
+    else:
+        return render_template('item.html', item = item_show, category = category) 
+
+      
 
 
 #Add new item to a category
