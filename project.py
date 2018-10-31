@@ -176,21 +176,23 @@ def getUserID(email):
 @app.route('/catalog')
 def categoryItems():
     categories = session.query(Category).all()
+    latest_items = session.query(CategoryItem).order_by(CategoryItem.id.desc()).limit(5).all()
 
-    return render_template('categories.html', categories = categories)
+    return render_template('categories.html', categories = categories, items = latest_items)
 
 
 # Show a category and list of items
 @app.route('/catalog/<category_name>')
 @app.route('/catalog/<category_name>/items')
 def showCategory(category_name):
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(name = category_name).one()
     items = session.query(CategoryItem).filter_by(category_name = category_name).all()
 
     if 'email' not in login_session:
-        return render_template('publicCategory.html', items = items, category = category)
+        return render_template('publicCategory.html', categories = categories, items = items, category = category)
     else:
-        return render_template('category.html', items = items, category = category)
+        return render_template('category.html', categories = categories, items = items, category = category)
 
 
 # Show item description

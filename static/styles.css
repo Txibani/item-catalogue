@@ -1,0 +1,43 @@
+body {
+    background-color: #fafafa;
+}
+
+p {
+    margin: 0;
+}
+
+#navbar {
+    background-color: #323232;
+    border-radius: 0;
+}
+#navbar .navbar-wrap {
+    display: flex;
+    height: 50px;
+    justify-content: space-between;
+    align-items: center;
+}
+#navbar .navbar-wrap a.button {
+    background-color: #fafafa;
+    padding: 0.5em 1.5em;
+    border-radius: 3px;
+}
+#navbar .navbar-wrap .title {
+    color: #fafafa;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.banner {
+    border-bottom: solid 1px #323232;
+}
+
+.description {
+    padding: 2em;
+}
+
+.wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+  
