@@ -1,22 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# from database_setup import Category, Base, CategoryItem
 from database_setup import Base, Category, CategoryItem, User
 
 engine = create_engine('sqlite:///itemcataloguewithusers.db')
-# Bind the engine to the metadata of the Base class so that the
-# declaratives can be accessed through a DBSession instance
+
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
-# A DBSession() instance establishes all conversations with the database
-# and represents a "staging zone" for all the objects loaded into the
-# database session object. Any change made against the objects in the
-# session won't be persisted into the database until you call
-# session.commit(). If you're not happy about the changes, you can
-# revert all of them back to the last commit by calling
-# session.rollback()
+
 session = DBSession()
 
 
@@ -75,7 +67,7 @@ categoryItem1 = CategoryItem(name="Gloves", description="A glove is a garment co
 session.add(categoryItem1)
 session.commit()
 
-categoryItem2 = CategoryItem(name="Braces (ankle/knee)", description="A shin guard or shin pad is a piece of equipment worn on the front of a player's shin to protect them from injury.",
+categoryItem2 = CategoryItem(name="Braces", description="A shin guard or shin pad is a piece of equipment worn on the front of a player's shin to protect them from injury.",
                      category=category2)
 
 session.add(categoryItem2)
@@ -105,7 +97,7 @@ categoryItem1 = CategoryItem(name="Gloves", description="A glove is a garment co
 session.add(categoryItem1)
 session.commit()
 
-categoryItem2 = CategoryItem(name="Braces (ankle/knee)", description="A shin guard or shin pad is a piece of equipment worn on the front of a player's shin to protect them from injury.",
+categoryItem2 = CategoryItem(name="Braces", description="A shin guard or shin pad is a piece of equipment worn on the front of a player's shin to protect them from injury.",
                      category=category3)
 
 session.add(categoryItem2)
@@ -122,7 +114,6 @@ categoryItem4 = CategoryItem(name="Uniform", description="Football boots, called
 
 session.add(categoryItem4)
 session.commit()
-
 
 
 print "added categories items!"
