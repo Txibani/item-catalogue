@@ -185,9 +185,30 @@ def getUserID(email):
 
 # Json endpoint
 @app.route(
+    '/catalog/<category_name>/<item_name>/json')
+def categoryItemJSON(category_name, item_name):
+    category = session.query(Category).filter_by(name=category_name).one()
+    items = session.query(CategoryItem).filter_by(name=item_name).all()
+    for item in items:
+        if item.category_name == category.name:
+            item_show = item
+
+    return jsonify(items=[i.serialize for i in items])
+
+
+@app.route(
+    '/catalog/<category_name>/json')
+def categoryJSON(category_name):
+    category = session.query(Category).filter_by(name=category_name).all()
+
+    return jsonify(category = [r.serialize for r in category])
+
+
+@app.route(
     '/catalog/json')
-def restaurantsJSON():
+def catalogJSON():
     categories = session.query(Category).all()
+
     return jsonify(categories=[r.serialize for r in categories])
 
 
