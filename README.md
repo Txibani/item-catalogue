@@ -41,7 +41,3 @@ To start the Virtual Machine:
 7. Run `python loatsofcategories.py` in order to add dummy data to the database
 8. Run `python projects.py` to run the project
 9. Open your browser and go to `http://localhost:1239`
-
-#IMPORTANT NOTE
-To be able to sign in you will need to update the data-clientid on the login page with your own id. To learn how to do this refer to https://docs.aws.amazon.com/aws-mobile/latest/developerguide/auth-google-create-google-project.html and Udacity Full Stack Nano degree
-Also replace client_id and client_secret with your own on client_secrets.json
