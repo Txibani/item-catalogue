@@ -112,10 +112,14 @@ def gconnect():
 
     data = answer.json()
 
-    print(data)
-
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+
+    # See if user exists, if it doesn't make a new entry
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id']=user_id
 
     output = ''
     output += '<h1>Welcome, '
@@ -162,8 +166,11 @@ def gdisconnect():
 
 # User
 def createUser(login_session):
+    print login_session
     newUser = User(
-        name=login_session['email'], picture=login_session['picture'])
+        name=login_session['email'], 
+        email=login_session['email'], 
+        picture=login_session['picture'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
@@ -240,6 +247,8 @@ def showCategory(category_name):
     category = session.query(Category).filter_by(name=category_name).one()
     items = session.query(CategoryItem).filter_by(
         category_name=category_name).all()
+    
+    creator = getUserInfo(category.user_id)
 
     if 'email' not in login_session:
         return render_template(
@@ -248,7 +257,8 @@ def showCategory(category_name):
     else:
         return render_template(
             'category.html', categories=categories,
-            items=items, category=category)
+            items=items, category=category, 
+            creator=creator)
 
 
 # Show item description
@@ -280,7 +290,8 @@ def addItem(category_name):
         newItem = CategoryItem(
             name=request.form['name'],
             description=request.form['description'],
-            category=category)
+            category=category, 
+            user_id=login_session['user_id'])
         session.add(newItem)
         session.commit()
         return redirect(url_for('showCategory', category_name=category.name))
@@ -292,14 +303,19 @@ def addItem(category_name):
 @app.route(
     '/catalog/<category_name>/<item_name>/edit/', methods=['GET', 'POST'])
 def editItem(category_name, item_name):
-    if 'email' not in login_session:
-        return redirect('login')
     category = session.query(Category).filter_by(name=category_name).one()
     editedItem = session.query(CategoryItem).filter_by(name=item_name).all()
 
     for item in editedItem:
         if item.category_name == category.name:
             item_show_edit = item
+
+    if 'email' not in login_session:
+        return redirect('login')
+
+    if item_show_edit.user_id != login_session['user_id']:
+        flash('You are not authorized to edit this item!')
+        return redirect(url_for('showCategory', category_name=category.name))
 
     if request.method == 'POST':
         if request.form['name']:
@@ -318,14 +334,19 @@ def editItem(category_name, item_name):
 @app.route(
     '/catalog/<category_name>/<item_name>/delete/', methods=['GET', 'POST'])
 def deleteItem(category_name, item_name):
-    if 'email' not in login_session:
-        return redirect('login')
     editedItem = session.query(CategoryItem).filter_by(name=item_name).all()
     category = session.query(Category).filter_by(name=category_name).one()
 
     for item in editedItem:
         if item.category_name == category.name:
             item_delete_edit = item
+
+    if 'email' not in login_session:
+        return redirect('login')
+
+    if login_session['user_id'] != item_delete_edit.user_id:
+        flash('You are not authorized to delete this item!')
+        return redirect(url_for('showCategory', category_name=category.name))
 
     if request.method == 'POST':
         session.delete(item_delete_edit)

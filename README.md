@@ -40,4 +40,4 @@ To start the Virtual Machine:
 6. Run `python database_setup.py` in order to set up the database
 7. Run `python loatsofcategories.py` in order to add dummy data to the database
 8. Run `python projects.py` to run the project
-9. Open your browser and go to `http://localhost:1239`
+9. Open your browser and go to `http://localhost:5000`

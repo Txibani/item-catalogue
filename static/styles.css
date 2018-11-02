@@ -70,7 +70,19 @@ p {
 }
 
 .signin-wrap img {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     margin: 2rem auto;
+}
+
+.flash.warning {
+    text-align: center;
+}
+
+.flash.warning ul {
+list-style: none;
+}
+
+.flash.warning ul li {
+background-color: #ad0202 bd;
 }
