@@ -38,6 +38,6 @@ To start the Virtual Machine:
 4. Run `vagrant ssh` to log into it
 5. cd into the vagrant foler where item-catalogue is
 6. Run `python database_setup.py` in order to set up the database
-7. Run `python loatsofcategories.py` in order to add dummy data to the database
-8. Run `python projects.py` to run the project
+7. Run `python lotsofcategories.py` in order to add dummy data to the database
+8. Run `python project.py` to run the project
 9. Open your browser and go to `http://localhost:5000`
